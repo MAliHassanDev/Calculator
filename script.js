@@ -59,11 +59,16 @@ function updateCurrentExpression(currentButtonContent){
 function calculateCurrentExpression(){
     try{
         solution=calculate(currentExpression);
+        console.log(solution);
         increaseInputFontSize();
+        
         if(solution===0){
             solution='';
             currentExpression = solution.toString();
             calculatorDisplay.value = currentExpression;
+        } else if(solution===Infinity){
+            currentExpression = '';
+            calculatorDisplay.value = solution;
         } else{
             currentExpression = solution.toString();
             calculatorDisplay.value = currentExpression;
@@ -75,6 +80,7 @@ function calculateCurrentExpression(){
         solution='error';
         calculatorDisplay.value = solution;
     }
+    
 }
 
 function calculate(expression) {
