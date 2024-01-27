@@ -1,10 +1,92 @@
-function calculate(expression) {
-    const regex = /(\d+(\.\d+)?)|(\.\d+)|([+*/-])/g;
-    const tokens = expression.match(regex) || [];
-    if(tokens.length===0){
-        throw new Error('Error');
+let checkExpression = (expression) =>{
+    const regex2 = /(\+|\*|\/|-)\1+/g;
+    let temptokens = expression.match(regex2) || [];
+    if(temptokens.length===0){
+        if(expression.indexOf('*')==0 || expression.indexOf('/')==0){
+            console.log(expression.indexOf('*'));
+            return 'error';
+        }else if(expression.indexOf('+')==0){
+            expression=expression.substring(1);
+            console.log(expression);
+            return expression;
+        }else {
+            return expression;
+        }
+    } else{
+        return 'error';
+    }
+}
+
+function clickSound(){
+    const tickSound = new Audio();
+    tickSound.src = "audio/tick-sound5.mp3";
+    tickSound.play();
+}
+
+function decreaseInputFontSizeonOverflow(){
+    while(calculatorDisplay.scrollWidth > calculatorDisplay.clientWidth && inputFontSize > minimumInputFontSize){
+        inputFontSize--;
+        calculatorDisplay.style.fontSize = inputFontSize + 'px';
+    }
+}
+function increaseInputFontSize(){
+    while(inputFontSize < originalInputFontSize){
+        inputFontSize++;
+        calculatorDisplay.style.fontSize = inputFontSize + 'px';
+    }
+}
+function updateCurrentExpression(currentButtonContent){
+    if(currentButtonContent==='AC'){
+        currentExpression='';
+        increaseInputFontSize();
+    } else if(currentButtonContent==='÷'){
+        currentExpression+='/';
+    } else if(currentButtonContent==='−'){
+        currentExpression+='-';
+    } else if(currentButtonContent==='×'){
+        currentExpression+='*';
+    } else if(currentButtonContent==='DEL'){
+        currentExpression=currentExpression.slice(0,-1);
+        increaseInputFontSize();
+       
+    } else {
+        currentExpression+=currentButtonContent;
     }
 
+    calculatorDisplay.value = currentExpression;
+}
+
+function calculateCurrentExpression(){
+    try{
+        solution=calculate(currentExpression);
+        increaseInputFontSize();
+        if(solution===0){
+            solution='';
+            currentExpression = solution.toString();
+            calculatorDisplay.value = currentExpression;
+        } else{
+            currentExpression = solution.toString();
+            calculatorDisplay.value = currentExpression;
+        }
+        
+    } catch(error){
+        console.error('error');
+        currentExpression='';
+        solution='error';
+        calculatorDisplay.value = solution;
+    }
+}
+
+function calculate(expression) {
+    let validExpression = checkExpression(expression);
+    
+    if(validExpression==='error'){
+        throw new Error('error');
+    }
+    
+    const regex = /(\d+(\.\d+)?)|(\.\d+)|([+*/-])/g;
+    let tokens = validExpression.match(regex) || [];
+    
     const numbers = [];
     const operators = [];
     for (let i = 0; i < tokens.length; i++){
@@ -35,11 +117,7 @@ function calculate(expression) {
     let result = numbers[0];
 
     for(let i=0;i<operators.length;i++){
-        console.log('Addition');
-        console.log(`Result: ${result}`);
-        if(numbers.length <= 1){
-            result = operators + numbers;
-        } else if(operators[i]==='+'){
+        if(operators[i]==='+'){
             result+=numbers[i+1]
         } else if(operators[i]==='-'){
             result-=numbers[i+1]
@@ -49,58 +127,33 @@ function calculate(expression) {
     return result;
 }
 
-try {
-    let calculations = '5-6';
-    let solution = calculate(calculations);
-    console.log(solution);
-} catch(error){
-    console.error(error.message);
-}
 
-let calculations='';
+
+let currentExpression='';
 let solution = '';
 let calculatorDisplay = document.getElementById('inputbar');
-// tick sound
-const tickSound = new Audio();
-tickSound.src = "audio/tick-sound5.mp3";
-
+const originalInputFontSize = parseInt(window.getComputedStyle(calculatorDisplay).fontSize);
+const minimumInputFontSize = 20;
+let inputFontSize = parseInt(window.getComputedStyle(calculatorDisplay).fontSize);
 const buttons = document.querySelectorAll('button');
-buttons.forEach(button=>{
-    button.addEventListener('click', function(){
-        tickSound.play();
-        if(button.textContent==='='){
-            try{
-                solution=calculate(calculations);
-                if(solution===0){
-                    solution='';
-                    calculations = solution.toString();
-                } else{
-                    calculations = solution.toString();
-                }
-                
-            } catch(error){
-                console.error('error');
-                calculations='';
-            }
-            
-        } else if(button.textContent==='AC'){
-            calculations='';
-        } else if(button.textContent==='÷'){
-            calculations+='/';
-        } else if(button.textContent==='−'){
-            calculations+='-';
-        } else if(button.textContent==='×'){
-            calculations+='*';
-        } else if(button.textContent==='DEL'){
-            calculations=calculations.slice(0,-1);
-        } else if(button.textContent==='00'){
-            calculations+='0';
-        } else {
-            calculations+=button.textContent;
-        }
 
-        calculatorDisplay.value = calculations;
-        
-        console.log(calculations);
+
+
+
+
+
+
+
+// when user clicks on a button
+buttons.forEach(button=>{
+    button.addEventListener('click', ()=>{
+        clickSound();
+        if(button.textContent==='='){
+            calculateCurrentExpression();
+        }else{
+            updateCurrentExpression(button.textContent);
+            
+        }
+        decreaseInputFontSizeonOverflow(); 
     })
 })
