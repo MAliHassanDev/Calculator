@@ -1,13 +1,11 @@
 let checkExpression = (expression) =>{
-    const regex2 = /(\+|\*|\/|-)\1+/g;
+    const regex2 = /([+\-*/]){2,}/g;
     let temptokens = expression.match(regex2) || [];
     if(temptokens.length===0){
         if(expression.indexOf('*')==0 || expression.indexOf('/')==0){
-            console.log(expression.indexOf('*'));
             return 'error';
         }else if(expression.indexOf('+')==0){
             expression=expression.substring(1);
-            console.log(expression);
             return expression;
         }else {
             return expression;
@@ -59,7 +57,6 @@ function updateCurrentExpression(currentButtonContent){
 function calculateCurrentExpression(){
     try{
         solution=calculate(currentExpression);
-        console.log(solution);
         increaseInputFontSize();
         
         if(solution===0){
@@ -104,7 +101,6 @@ function calculate(expression) {
         }
     }
     for(let i=0;i < operators.length; i++){
-        console.log(i);
         if(operators[i]==='*' || operators[i]=='/'){
             let num1 = numbers[i]
             let num2 = numbers[i+1]
