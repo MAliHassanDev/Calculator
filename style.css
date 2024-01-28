@@ -1,44 +1,83 @@
+@font-face{
+  font-family: Eurostyle;
+  src: url('font/eurostile.TTF');
+}
+
+*{
+  margin:0;
+  padding: 0;
+  box-sizing:border-box;
+}
 body{
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  font-family: "Poppins", sans-serif;
   background: linear-gradient(45deg,#0a0a0a, #3a4452)
 }
 main{
-  padding: 25px;
+  padding: 17px 25px 25px 25px;
   background-color: rgba(0, 0, 0, 0.774);
   border-radius: 10px;
-  border: .5px solid rgba(245, 245, 245, 0.459);
-  box-shadow: 0px 0px 10px .5px rgba(255, 255, 255, 0.26);
+  border: .1px solid rgba(245, 245, 245, 0.459);
+  box-shadow: 0px 0px 10px .2px rgba(255, 255, 255, 0.26);
   margin: 20px;
+  position: relative;
+  margin-bottom: 5rem;
+  overflow: hidden;
+}
+/* header */
+#header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  margin-bottom: 15px;
+}
+#header h1{
+  font-family: Eurostyle;
+  letter-spacing: 3px;
+}
+
+.light-mode{
+  height: 20px;
+  width: 20px;
+  background-image: url('img/icons8-sun-30.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* input bar */
 
 #input input{
-  width: 256px;
+  width: 258px;
   font-size: 40px;
   border: none;
-  background-color: #1c1c1ce3;
-  color: white;
-  margin-bottom: 35px;
+  background-color: #d3e3e1;
+  color: black;
+  margin-bottom: 32px;
   height: 5.5rem;
   border-radius: 10px;
   padding-right: 10px;
-  border: 1px solid white;
+  border: 0.1px solid rgba(255, 255, 255, 0.473);
   text-align:right;
   outline:none;
+  font-family: "Poppins", sans-serif;
+  box-shadow: inset 0px 0px 13px .5px rgba(0, 0, 0, 0.582);
 }
 input::placeholder{
-  color:white;
+  color:black;
+  font-family: "Poppins", sans-serif;
 }
 
 /* buttons */
 #buttons{
   display: flex;
   flex-direction: column;
-  row-gap:15px;
+  row-gap:13px;
 }
 .div{
   display: flex;
@@ -46,11 +85,11 @@ input::placeholder{
 }
 
 button{
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  border-radius: 10px;
   border: none;
-  font-size: 18px;
+  font-size: 20px;
   color: white;
   background-color: #5f5e5ec7;
   cursor: pointer;
@@ -75,15 +114,55 @@ button:active{
   color: black;
 }
 .zero-button{
-  width:127px;
-  border-radius: 30px;
+  width:122px;
+  border-radius: 10px;
   text-align: left;
   padding-left: 25px;
   font-size: 25px;
+  
 }
 
+/* When user clicks on light mode */
 
-
+.lightMode{
+  background-color: #e2dfd2;
+  border: 1.5px solid rgb(0, 0, 0);
+  box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.788);
+}
+.lightMode .light-mode{
+  background-image: url('img/icons8-crescent-48.png')
+}
+.lightMode #header h1{
+  color: black;
+  font-weight: bolder;
+  font-family: Eurostyle;
+}
+.lightMode #input input{
+  border: 1px solid rgba(0, 0, 0, 0.568);
+  box-shadow: inset 0px 0px 13px .3px rgba(0, 0, 0, 0.267);
+}
+.lightMode button{
+  background-color: #b0c2cc;
+  color: black;
+}
+.lightMode button:active{
+  border: 1px solid #e2dfd2;
+}
+.lightMode .operators{
+  background-color: #f28705;
+  color: white;
+}
+/* .lightMode .zero-button{
+  background-color: #6bca8c;
+  color: white;
+} */
+.lightMode .calc-control{
+  background-color:#70b9e0;
+}
+/* .lightMode button{
+  background-color:#ebebf2;
+  color: black;
+} */
 
 
 @media screen and (max-width: 600px){

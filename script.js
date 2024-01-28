@@ -1,15 +1,22 @@
 let checkExpression = (expression) =>{
-    const regex2 = /([+\-*/]){2,}/g;
+    const expressionLength = expression.length;
+    const regex2 = /([+\-*/]){2,}|(\.\.)/g;
+    let expressionArray = [];
     let temptokens = expression.match(regex2) || [];
     if(temptokens.length===0){
-        if(expression.indexOf('*')==0 || expression.indexOf('/')==0){
-            return 'error';
-        }else if(expression.indexOf('+')==0){
-            expression=expression.substring(1);
-            return expression;
-        }else {
-            return expression;
+        expressionArray = [...expression];
+        for(let i=0;i<expressionArray.length;i++){
+            if(i==0 || i==(expressionArray.length-1)){
+                if(expressionArray[i]=='-'){
+                    console.log('--------');
+                } else if(isNaN(expressionArray[i])){
+                    expressionArray.splice(i,1);
+                }
+            }
         }
+
+        expression = expressionArray.join('');
+        return expression;
     } else{
         return 'error';
     }
@@ -46,12 +53,22 @@ function updateCurrentExpression(currentButtonContent){
     } else if(currentButtonContent==='DEL'){
         currentExpression=currentExpression.slice(0,-1);
         increaseInputFontSize();
-       
-    } else {
+    } else if(currentButtonContent==='+/-'){
+        if(currentExpression.length!=0){
+            currentExpression = '-' + currentExpression;
+        } else{
+            currentExpression='';
+        }
+        
+    }else {
         currentExpression+=currentButtonContent;
     }
 
     calculatorDisplay.value = currentExpression;
+}
+
+function limitToThreeDecimal(number){
+    return Math.round(number*1000)/1000;
 }
 
 function calculateCurrentExpression(){
@@ -67,6 +84,11 @@ function calculateCurrentExpression(){
             currentExpression = '';
             calculatorDisplay.value = solution;
         } else{
+            let solutionInFloat = parseFloat(solution);
+            if(solutionInFloat%1 !== 0){
+                solutionInFloat = limitToThreeDecimal(solutionInFloat);
+            }
+            solution = solutionInFloat;
             currentExpression = solution.toString();
             calculatorDisplay.value = currentExpression;
         }
@@ -74,21 +96,22 @@ function calculateCurrentExpression(){
     } catch(error){
         console.error('error');
         currentExpression='';
-        solution='error';
+        solution='Syntax Error';
         calculatorDisplay.value = solution;
     }
     
 }
 
-function calculate(expression) {
+function calculate(expression)  {
     let validExpression = checkExpression(expression);
     
     if(validExpression==='error'){
         throw new Error('error');
     }
     
-    const regex = /(\d+(\.\d+)?)|(\.\d+)|([+*/-])/g;
+    const regex = /(\d+(\.\d+)?)|(-\d+)|(\.\d+)|([+*/])/g;
     let tokens = validExpression.match(regex) || [];
+    console.log(tokens);
     
     const numbers = [];
     const operators = [];
@@ -100,6 +123,10 @@ function calculate(expression) {
             operators.push(token);
         }
     }
+
+    console.log(`Numbers: ${numbers}`);
+    console.log(`Operators: ${operators}`);
+   
     for(let i=0;i < operators.length; i++){
         if(operators[i]==='*' || operators[i]=='/'){
             let num1 = numbers[i]
@@ -113,39 +140,42 @@ function calculate(expression) {
             numbers.splice(i+1,1);
             operators.splice(i,1)
             i--;
+            console.log(`Numbers-after-MD: ${numbers}`);
+            console.log(`Operators-after-MD: ${operators}`);
         }
     }
 
     let result = numbers[0];
-
-    for(let i=0;i<operators.length;i++){
-        if(operators[i]==='+'){
-            result+=numbers[i+1]
-        } else if(operators[i]==='-'){
-            result-=numbers[i+1]
+    if(operators.length==0){
+        for(let i=1;i<numbers.length;i++){
+            result+=numbers[i];
         }
+        return result;
+    } else{
+        for(let i=0;i<operators.length;i++){
+            if(operators[i]==='+'){
+                result+=numbers[i+1]
+            }
+        }
+        return result;
     }
-
-    return result;
+    
 }
-
-
 
 let currentExpression='';
 let solution = '';
 let calculatorDisplay = document.getElementById('inputbar');
 const originalInputFontSize = parseInt(window.getComputedStyle(calculatorDisplay).fontSize);
-const minimumInputFontSize = 20;
+const minimumInputFontSize = 25;
 let inputFontSize = parseInt(window.getComputedStyle(calculatorDisplay).fontSize);
 const buttons = document.querySelectorAll('button');
+const lightmode = document.querySelector(".light-mode");
+let mainBody = document.querySelector('.main-section');
+// when uder clicks on light mode button
 
-
-
-
-
-
-
-
+lightmode.addEventListener('click', function(){
+    mainBody.classList.toggle('lightMode');
+})
 // when user clicks on a button
 buttons.forEach(button=>{
     button.addEventListener('click', ()=>{
