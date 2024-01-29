@@ -11,7 +11,7 @@ let checkExpression = (expression) =>{
         expressionArray = [...expression];
         for(let i=expressionArray.length-1;i>=0;i--){
             if(i==0 || i==(expressionArray.length-1)){
-                if(isNaN(expressionArray[i]) && expression[i]!='-'){
+                if(isNaN(expressionArray[i]) && expression[i]!='-' && expression[i]!='.'){
                     expressionArray.splice(i,1);
                 }
             }
