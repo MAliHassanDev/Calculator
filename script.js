@@ -1,15 +1,17 @@
 let checkExpression = (expression) =>{
     const expressionLength = expression.length;
-    const regex2 = /([+\-*/]){2,}|(\.\.)/g;
+    const regex2 = /([+\-*/]){2,}|(\.\.)|(\.\d+\.\d+)/g;
     let expressionArray = [];
     let temptokens = expression.match(regex2) || [];
     if(temptokens.length===0){
+        if(expression.length===1 && isNaN(expression.charAt(0))){
+            expression = '';
+            return expression;
+        }
         expressionArray = [...expression];
-        for(let i=0;i<expressionArray.length;i++){
+        for(let i=expressionArray.length-1;i>=0;i--){
             if(i==0 || i==(expressionArray.length-1)){
-                if(expressionArray[i]=='-'){
-                    console.log('--------');
-                } else if(isNaN(expressionArray[i])){
+                if(isNaN(expressionArray[i]) && expression[i]!='-'){
                     expressionArray.splice(i,1);
                 }
             }
@@ -75,14 +77,18 @@ function calculateCurrentExpression(){
     try{
         solution=calculate(currentExpression);
         increaseInputFontSize();
-        
-        if(solution===0){
+        console.log(solution);
+        if(isNaN(solution)){
             solution='';
-            currentExpression = solution.toString();
+            currentExpression = solution;
+            calculatorDisplay.value = currentExpression;
+        } else if(solution===0){
+            solution='';
+            currentExpression = solution;
             calculatorDisplay.value = currentExpression;
         } else if(solution===Infinity){
             currentExpression = '';
-            calculatorDisplay.value = solution;
+            calculatorDisplay.value = solution.toString();
         } else{
             let solutionInFloat = parseFloat(solution);
             if(solutionInFloat%1 !== 0){
@@ -104,15 +110,13 @@ function calculateCurrentExpression(){
 
 function calculate(expression)  {
     let validExpression = checkExpression(expression);
-    
     if(validExpression==='error'){
         throw new Error('error');
     }
     
-    const regex = /(\d+(\.\d+)?)|(-\d+)|(\.\d+)|([+*/])/g;
+    const regex = /(\d+(\.\d+)?)|((-\d+(\.\d+)?)|(-\.(\d+)?))|(\.\d+)|([+*/])/g;
     let tokens = validExpression.match(regex) || [];
     console.log(tokens);
-    
     const numbers = [];
     const operators = [];
     for (let i = 0; i < tokens.length; i++){
@@ -124,9 +128,6 @@ function calculate(expression)  {
         }
     }
 
-    console.log(`Numbers: ${numbers}`);
-    console.log(`Operators: ${operators}`);
-   
     for(let i=0;i < operators.length; i++){
         if(operators[i]==='*' || operators[i]=='/'){
             let num1 = numbers[i]
@@ -140,8 +141,6 @@ function calculate(expression)  {
             numbers.splice(i+1,1);
             operators.splice(i,1)
             i--;
-            console.log(`Numbers-after-MD: ${numbers}`);
-            console.log(`Operators-after-MD: ${operators}`);
         }
     }
 
