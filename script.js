@@ -1,11 +1,11 @@
 let checkExpression = (expression) =>{
     const expressionLength = expression.length;
-    const regex2 = /([+\*/]){2,}|(-){2,}|(\.\.)|(\.\d+\.\d+)/g;
+    const regex2 = /([+\*/]){2,}|(-){2,}|(\.\.)|([+-]{2,})|(\-\*)|(\-\/)|(\.\d+\.(\d+)?)/g;
     let expressionArray = [];
     let temptokens = expression.match(regex2) || [];
     if(temptokens.length===0){
         if(expression.length===1 && isNaN(expression.charAt(0))){
-            expression = '';
+            expression = '0';
             return expression;
         }
         expressionArray = [...expression];
@@ -26,7 +26,7 @@ let checkExpression = (expression) =>{
         expression = expressionArray.join('');
         return expression;
     } else{
-        throw new Error('Syntax Eror1');
+        throw new Error('Syntax Eror');
     }
 }
 
@@ -147,6 +147,10 @@ function calculate(expression)  {
         } else {
             operators.push(token);
         }
+    }
+
+    if(operators.length==numbers.length){
+        throw new Error('Operators Length')
     }
 
     for(let i=0;i < operators.length; i++){
