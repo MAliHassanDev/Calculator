@@ -11,8 +11,14 @@ let checkExpression = (expression) =>{
         expressionArray = [...expression];
         for(let i=expressionArray.length-1;i>=0;i--){
             if(i==0 || i==(expressionArray.length-1)){
+                if(expression[i]==='/' || expression[i]=='*'){
+                    if(i==0){
+                        throw new Error('Syntax Error');
+                    }
+                } 
                 if(isNaN(expressionArray[i]) && expression[i]!='-' && expression[i]!='.'){
                     expressionArray.splice(i,1);
+                    i--;
                 }
             }
         }
@@ -20,7 +26,7 @@ let checkExpression = (expression) =>{
         expression = expressionArray.join('');
         return expression;
     } else{
-        return 'error';
+        throw new Error('Syntax Eror1');
     }
 }
 
@@ -78,6 +84,9 @@ function updateCurrentExpression(currentButtonContent){
 function limitToThreeDecimal(number){
     if(number>=1){
         number = Math.round(number*1000)/1000;
+    } else{
+        console.log(number);
+        number = Math.round(number*10000000)/10000000;
     }
     return number;
 }
@@ -109,7 +118,7 @@ function calculateCurrentExpression(){
         }
         
     } catch(error){
-        console.error('error');
+        console.error('error',error.message);
         currentExpression='';
         solution='Syntax Error';
         calculatorDisplay.value = solution;
@@ -118,10 +127,14 @@ function calculateCurrentExpression(){
 }
 
 function calculate(expression)  {
-    let validExpression = checkExpression(expression);
-    if(validExpression==='error'){
-        throw new Error('error');
+    let validExpression = '';
+    try{
+         validExpression = checkExpression(expression);
+    } catch(error){
+        throw error;
     }
+    
+    
     
     const regex = /(\d+(\.\d+)?)|((-\d+(\.\d+)?)|(-\.(\d+)?))|(\.\d+)|([+*/])/g;
     let tokens = validExpression.match(regex) || [];
