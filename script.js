@@ -84,10 +84,7 @@ function updateCurrentExpression(currentButtonContent){
 function limitToThreeDecimal(number){
     if(number>=1){
         number = Math.round(number*1000)/1000;
-    } else{
-        console.log(number);
-        number = Math.round(number*10000000)/10000000;
-    }
+    } 
     return number;
 }
 
