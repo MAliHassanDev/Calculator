@@ -1,6 +1,6 @@
 let checkExpression = (expression) =>{
     const expressionLength = expression.length;
-    const regex2 = /([+\-*/]){2,}|(\.\.)|(\.\d+\.\d+)/g;
+    const regex2 = /([+\*/]){2,}|(-){2,}|(\.\.)|(\.\d+\.\d+)/g;
     let expressionArray = [];
     let temptokens = expression.match(regex2) || [];
     if(temptokens.length===0){
@@ -116,7 +116,6 @@ function calculate(expression)  {
     
     const regex = /(\d+(\.\d+)?)|((-\d+(\.\d+)?)|(-\.(\d+)?))|(\.\d+)|([+*/])/g;
     let tokens = validExpression.match(regex) || [];
-    console.log(tokens);
     const numbers = [];
     const operators = [];
     for (let i = 0; i < tokens.length; i++){
@@ -143,21 +142,12 @@ function calculate(expression)  {
             i--;
         }
     }
-
     let result = numbers[0];
-    if(operators.length==0){
-        for(let i=1;i<numbers.length;i++){
-            result+=numbers[i];
-        }
-        return result;
-    } else{
-        for(let i=0;i<operators.length;i++){
-            if(operators[i]==='+'){
-                result+=numbers[i+1]
-            }
-        }
-        return result;
+
+    for(let i=1;i<numbers.length;i++){
+       result+=numbers[i];
     }
+    return result; 
     
 }
 
