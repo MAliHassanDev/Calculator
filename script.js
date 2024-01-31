@@ -45,6 +45,8 @@ function increaseInputFontSize(){
 function updateCurrentExpression(currentButtonContent){
     if(currentButtonContent==='AC'){
         currentExpression='';
+        currentButtonContent = currentExpression;
+        calculatorDisplay.value = currentButtonContent;
         increaseInputFontSize();
     } else if(currentButtonContent==='÷'){
         currentExpression+='/';
@@ -54,10 +56,14 @@ function updateCurrentExpression(currentButtonContent){
         currentExpression+='*';
     } else if(currentButtonContent==='DEL'){
         currentExpression=currentExpression.slice(0,-1);
+        currentButtonContent='';
+        calculatorDisplay.value = calculatorDisplay.value.slice(0,-1);
         increaseInputFontSize();
     } else if(currentButtonContent==='+/-'){
         if(currentExpression.length!=0){
             currentExpression = '-' + currentExpression;
+            currentButtonContent = '';
+            calculatorDisplay.value= '-' + calculatorDisplay.value;
         } else{
             currentExpression='';
         }
@@ -66,7 +72,7 @@ function updateCurrentExpression(currentButtonContent){
         currentExpression+=currentButtonContent;
     }
 
-    calculatorDisplay.value = currentExpression;
+    calculatorDisplay.value+=currentButtonContent;
 }
 
 function limitToThreeDecimal(number){
@@ -175,7 +181,8 @@ buttons.forEach(button=>{
         if(button.textContent==='='){
             calculateCurrentExpression();
         }else{
-            updateCurrentExpression(button.textContent);
+            let buttonContent = button.textContent;
+            updateCurrentExpression(buttonContent);
             
         }
         decreaseInputFontSizeonOverflow(); 
