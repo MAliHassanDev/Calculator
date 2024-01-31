@@ -70,7 +70,10 @@ function updateCurrentExpression(currentButtonContent){
 }
 
 function limitToThreeDecimal(number){
-    return Math.round(number*1000)/1000;
+    if(number>=1){
+        number = Math.round(number*1000)/1000;
+    }
+    return number;
 }
 
 function calculateCurrentExpression(){
