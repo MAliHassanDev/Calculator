@@ -96,7 +96,7 @@ button{
 }
 button:active{
   border: 1px solid black;
-  font-size: 17px;
+  font-size: 19px;
 }
 .zero-button:active{
   font-size: 24px;
@@ -125,7 +125,8 @@ button:active{
 /* When user clicks on light mode */
 
 .lightMode{
-  background-color: #e2dfd2;
+  /* background-color: #e2dfd2; */
+  background-color: rgba(255, 255, 255, 0.877);
   border: 1.5px solid rgb(0, 0, 0);
   box-shadow: 0px 0px 20px 1px rgba(0, 0, 0, 0.788);
 }
@@ -139,14 +140,22 @@ button:active{
 }
 .lightMode #input input{
   border: 1px solid rgba(0, 0, 0, 0.432);
-  box-shadow: inset 0px 0px 13px .3px rgba(0, 0, 0, 0.267);
+  box-shadow: inset 0px 0px 13px 1px rgba(0, 0, 0, 0.267), 0px 0px 0px 1.5px rgba(0, 0, 0, 0.733);
+  background-color: #595959;
+  color: white;
+}
+.lightMode input::placeholder{
+  color: white;
 }
 .lightMode button{
-  background-color: #b0c2cc;
+  background-color: #CECECE;
   color: black;
+  border: .1px solid black;
+  box-shadow: 3px 3px 3px 0px  rgba(0, 0, 0, 0.541);
 }
 .lightMode button:active{
   border: 1px solid #e2dfd2;
+  box-shadow: inset 0px 0px 0px 1px black;
 }
 .lightMode .operators{
   background-color: #f28705;
@@ -157,7 +166,9 @@ button:active{
   color: white;
 } */
 .lightMode .calc-control{
-  background-color:#70b9e0;
+  /* background-color:#70b9e0; */
+  background-color: #929292;
+  color: white;
 }
 /* .lightMode button{
   background-color:#ebebf2;
@@ -165,15 +176,3 @@ button:active{
 } */
 
 
-@media screen and (max-width: 600px){
-  button:active{
-    border: none;
-    font-size: 18px;
-  }
-  .zer-button:active{
-    font-size: 25px;
-  }
-  .operators:active{
-    font-size: 29px;
-  }
-}
