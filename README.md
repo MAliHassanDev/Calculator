@@ -1,5 +1,5 @@
 # Calculator 
-
+A web based calculator that can perform calculations in decimals.
 
 ## [Live Preview](https://malihassandev.github.io/Calculator/)
 
