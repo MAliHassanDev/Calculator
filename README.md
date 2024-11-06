@@ -20,3 +20,4 @@ A web based calculator that can perform calculations in decimals.
 - Learned theme switching using css variables.
 ## Navigation
 - My next project [Youtube Homepage](https://github.com/MAliHassanDev/YouTube-Website)
+- My previous project [Rock Paper Scissors](https://github.com/MAliHassanDev/Rock-Papper-Scissors)
